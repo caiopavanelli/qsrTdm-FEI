@@ -16,6 +16,7 @@
 		start/2,
 		time/2,
 		do/2,
+		situation/2,
 		prevAction/3,
 		robot/1
 	]).
@@ -47,55 +48,82 @@ angleV(loc(Xa, Ya), loc(Xb, Yb), loc(Xr, Yr), Gamma):-
 
 start(do(A,_S),T) :- time(A,T).
 
-time(startMove(_Body,_Location1,_Location2,Time), Time).
-time(endMove(_Body,_Location1,_Location2,Time), Time).
-time(startPan(_Omega,Time), Time).
-time(endPan(_Omega,Time), Time).
-time(sense(_P,loc(_Xr,_Yr),Time), Time).
+%time(startMove(_Body,_Location1,_Location2,Time), Time).
+%time(endMove(_Body,_Location1,_Location2,Time), Time).
+%time(startPan(_Omega,Time), Time).
+%time(endPan(_Omega,Time), Time).
+%time(sense(_P,loc(_Xr,_Yr),Time), Time).
+
+%% Generalized verion of time/2 advised from Prof. Dr. Silvio do Lago Pereira
+time(Action,Time) :-
+   Action =.. List,
+   last(List,Time).
 
 %axiom do, adds an action to the situation sequence
-do(A,S):-
-	primitive_action(A),
-	poss(A,S),
-	not(situation(S,_)),
-	start(S,T1),
-	actionConsequences(A,S),
-	persist([],[A|[]],S),
-	time(A,T),
-	retract(start(S,T1)),
-	assertz(start(S,T)),
-	!.
+%do(A,S):-
+%	primitive_action(A),
+%	poss(A,S),
+%	not(situation(S,_)),
+%	start(S,T1),
+%	actionConsequences(A,S),
+%	persist([],[A|[]],S),
+%	time(A,T),
+%	retract(start(S,T1)),
+%	assertz(start(S,T)),
+%	!.
+%
+%do(A,S):-
+%	primitive_action(A),
+%	poss(A,S),
+%	situation(S,A1),
+%	append([A|[]],A1,A2),
+%	start(S,T1),
+%	actionConsequences(A,S),
+%	persist(A1,A2,S),
+%	time(A,T),
+%	retract(start(S,T1)),
+%	assertz(start(S,T)).
 
 do(A,S):-
 	primitive_action(A),
 	poss(A,S),
-	situation(S,A1),
-	append([A|[]],A1,A2),
+%	situation(S,A1),
 	start(S,T1),
 	actionConsequences(A,S),
-	persist(A1,A2,S),
+%	persist(A1,[A|A1],S),
+	update_current_situation(A),
 	time(A,T),
 	retract(start(S,T1)),
 	assertz(start(S,T)).
 
 %asserts the updated action list
-persist(A1,A2,S):-
-	(
-		retract(situation(S,A1)),!;
-	not(retract(situation(S,A1)))),
-	assertz(situation(S,A2)).
+%persist(A1,A2,S):-
+%	(
+%		retract(situation(S,A1)),!;
+%	not(retract(situation(S,A1)))),
+%	assertz(situation(S,A2)).
 
-previous(PA,T,[PA|T]).
-prevAction(PB,A,L):-
-	member(A,L),
-	previous(PA,TA,L),
-	(	PA=A,
-		previous(PB,_,TA), !;
-		prevAction(PB,A,TA), !
-	 ), !;
-	 not(L=[]),
-	 not(member(A,L)),
-	 previous(PB,_,L), !.
+%% As stated by Prof. Dr. Silvio do Lago Pereira, the condition retract(situation(S,A1)) is never false
+%% because situation/2 is defined in the initial situation
+update_current_situation(A) :-
+   retract(situation(s0,As)),
+   assertz(situation(s0,[A|As])).
 
+%previous(PA,T,[PA|T]).
+%prevAction(PB,A,L):-
+%	member(A,L),
+%	previous(PA,TA,L),
+%	(	PA=A,
+%		previous(PB,_,TA), !;
+%		prevAction(PB,A,TA), !
+%	 ), !;
+%	 not(L=[]),
+%	 not(member(A,L)),
+%	 previous(PB,_,L), !.
 
+%% A more elegant approach by Prof. Dr. Silvio do Lago Pereira to find the previous action in a given situation
+prevAction(PreviousAction,Action,ActionList):-
+	(   var(Action)
+	->  [PreviousAction|_] = ActionList
+	;   append(_,[Action,PreviousAction|_],ActionList) ).
 

@@ -38,7 +38,10 @@ initpairs(assertz(thresholdBoundary(16))).
 
  %% Introduction of thresholdUnion. A small value needed for differentiating
  %% approaching to coalescing and receding from splitting
-initpairs(assertz(thresholdUnion(10))).
+initpairs(assertz(thresholdUnion(15))).
+
+%% threshold to differentiate coalescing from hiding
+initpairs(assertz(thresholdHiding(5))).
 
 initpairs(do(startMove(cpto, loc(5,-4), loc(6,-4), 1), s0)).
 initpairs(do(endMove(cpto, loc(5,-4), loc(6,-4), 1), s0)).

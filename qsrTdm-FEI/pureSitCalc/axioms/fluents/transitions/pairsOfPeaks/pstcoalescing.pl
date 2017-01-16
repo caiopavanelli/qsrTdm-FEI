@@ -157,12 +157,6 @@ coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situatio
 	location(Robot, loc(Xr,Yr), Situation), 
 	location(BodyA, loc(Xa,Ya), Situation), 
 	location(BodyB, loc(Xb,Yb), Situation), 
-	situation(Situation,ActionList),
-	prevAction(PreviousAction, Action, ActionList),
-	coalescing(pk(BodyA,_,SizeA,DistA),pk(BodyB,_,SizeB,DistB),loc(Xr,Yr),do(PreviousAction,Situation)), 
+	coalescing(pk(BodyA,_,SizeA,DistA),pk(BodyB,_,SizeB,DistB),loc(Xr,Yr),Situation), 
 	!.
 	
-coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),Situation):-
-	situation(Situation,[Action|_]),
-	coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situation)),
-	!.

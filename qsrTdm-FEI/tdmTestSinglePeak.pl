@@ -48,17 +48,18 @@ querysingle(X,Y, extending(pk(bodyB, _Depth, _Size, _Distance), loc(X, Y), s0)).
 querysingle(X,Y, shrinking(pk(bodyB, _Depth, _Size, _Distance), loc(X, Y), s0)).
 querysingle(X,Y, vanishing(pk(bodyB, _Depth, _Size, _Distance), loc(X, Y), s0)).
 
-querysingleAtribute(X,Y, depth(pk(bodyB, Depth, _, _), Depth, loc(X,Y), s0)).
-querysingleAtribute(X,Y, size(pk(bodyB, _, Size, _), Size, loc(X,Y), s0)).
-querysingleAtribute(X,Y, dist(pk(bodyB, _, _, Dist), Dist, loc(X,Y), s0)).
+querysingleAttribute(X,Y, depth(pk(bodyB, Depth, _, _), Depth, loc(X,Y), s0)).
+querysingleAttribute(X,Y, size(pk(bodyB, _, Size, _), Size, loc(X,Y), s0)).
+querysingleAttribute(X,Y, dist(pk(bodyB, _, _, Dist), Dist, loc(X,Y), s0)).
 
 test_single_peak :-
+	working_directory(_, 'C:/qsrTdm-FEI'),
 	forall(initsingle(INIT),INIT),
 	forall(actionsingle(DO), 
-		    (	DO,
-		    	writeln(actionsingle:DO),
+		    (	call_time(DO, TimeAction),
+		    	writeln(TimeAction:actionsingle:DO,'test_single_peak.txt'),
 		    	location(cpto, loc(X,Y), s0),
-		    	forall(querysingleAtribute(X,Y,AT), (AT, writeln(AT))),
-		    	forall(querysingle(X,Y,Q), (Q -> writeln(true:Q) ; writeln(false:Q)))
+		    	forall(querysingleAttribute(X,Y,AT), (call_time(AT,Ta),	writeln(Ta:AT,'test_single_peak.txt'))),
+		    	forall(querysingle(X,Y,QS), (QS -> call_time(QS,Ts), writeln(Ts:true:QS,'test_single_peak.txt'); call_time(QS,Ts), writeln(Ts:false:QS,'test_single_peak.txt')))
 		    )).
 		    

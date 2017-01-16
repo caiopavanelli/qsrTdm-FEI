@@ -15,35 +15,38 @@
  * - Initial Situation assertion
  ****************************************************************/
 
-:- module(initsingle,[
-		initsingle/1
+:- module(initFluentsTest,[
+		initFluents/1
 	]).
-
-initsingle(assertz(situation(s0,[]))).
-initsingle(assertz(start(s0, 0))).
-initsingle(assertz(location(cpto, loc(-13,-2), s0))).
-initsingle(assertz(location(bodyA, loc(-7,2), s0))).
-initsingle(assertz(location(bodyB, loc(5,1), s0))).
-initsingle(assertz(facing(90, loc(-13,-2), s0))).
-initsingle(assertz(fieldView(120))).
-initsingle(assertz(limitBoundary(15))).
-initsingle(assertz(radius(bodyA,1))).
-initsingle(assertz(radius(bodyB,1))).
-initsingle(assertz(radius(cpto,0))).
+	
+initFluents(assertz(situation(s0,[]))).
+initFluents(assertz(start(s0, 0))).
+initFluents(assertz(location(cpto, loc(0,8), s0))).
+initFluents(assertz(location(bodyA, loc(-7,2), s0))).
+initFluents(assertz(location(bodyB, loc(5,1), s0))).
+initFluents(assertz(facing(180, loc(0,8), s0))).
+initFluents(assertz(fieldView(120))).
+initFluents(assertz(limitBoundary(15))).
+initFluents(assertz(radius(bodyA,1))).
+initFluents(assertz(radius(bodyB,1))).
+initFluents(assertz(radius(cpto,0))). 
 
  %% Introduction of thresholdBoundary. A small value needed for
  %% differentiating extending from appearing and vanishing from
  %% shrinking, as pointed in Paulo E. Santos, "REASONING ABOUT DEPTH AND MOTION FROM AN OBSERVER�S VIEWPOINT", SSC07
-initsingle(assertz(thresholdBoundary(16))).
+initFluents(assertz(thresholdBoundary(16))).
 
  %% Introduction of thresholdUnion. A small value needed for differentiating
  %% approaching to coalescing and receding from splitting
-initsingle(assertz(thresholdUnion(15))).
+initFluents(assertz(thresholdUnion(15))).
 
 %% threshold to differentiate coalescing from hiding
-initsingle(assertz(thresholdHiding(5))).
+initFluents(assertz(thresholdHiding(5))).
 
-initsingle(do(startMove(cpto, loc(-13,-2), loc(-14,-2), 1), s0)).
-initsingle(do(endMove(cpto, loc(-13,-2), loc(-14,-2), 1), s0)).
-initsingle(do(startMove(cpto, loc(-14,-2), loc(-13,-2), 1), s0)).
-initsingle(do(endMove(cpto, loc(-14,-2), loc(-13,-2), 1), s0)).
+initFluents(assertz(do(startMove(cpto, loc(0.0,8.0), loc(0.1,8.1), 1), s0))).
+initFluents(assertz(do(endMove(cpto, loc(0.0,8.0), loc(0.1,8.1), 1), s0))).
+initFluents(assertz(do(startMove(cpto, loc(0.1,8.1), loc(0.0,8.0), 1), s0))).
+initFluents(assertz(do(endMove(cpto, loc(0.1,8.1), loc(0.0,8.0), 1), s0))).
+		 
+			
+				

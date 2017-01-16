@@ -9,11 +9,38 @@
  *
  *****************************************************************/
 
-:- module(coalescing,[
-		coalescing/4
+:- module(hiding,[
+		hiding/4
 	]).
+	
+	
+/*
+	Hiding is a transition between hiding and hidden
+*/	
 
-coalescing(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), loc(Xr,Yr), do(Action,Situation)):-
+%hiding(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), loc(Xr,Yr), do(_Action,Situation)):-
+%	dist(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), Distance, loc(Xr,Yr), Situation),
+%	location(BodyA, loc(Xa,Ya), Situation),
+%	location(BodyB, loc(Xb,Yb), Situation),
+%	euD(loc(Xa, Ya), loc(Xr, Yr), EuDistanceA),
+%	euD(loc(Xb, Yb), loc(Xr, Yr), EuDistanceB),
+%	(
+%		EuDistanceA >= EuDistanceB,
+%		size(pk(BodyA, _, SizeA, _), SizeA, loc(Xr, Yr), Situation),
+%		Distance =< SizeA*(-1), !;
+%		EuDistanceB > EuDistanceA,
+%		size(pk(BodyB, _, SizeB, _), SizeB, loc(Xr, Yr), Situation),
+%		Distance =< SizeB*(-1), !
+%	), !.
+%	
+%hiding(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),Situation):-
+%	situation(Situation,[Action|_]),
+%	hiding(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situation)),
+%	!.
+	
+%%%%%%%%%%%%%%
+	
+hiding(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), loc(Xr,Yr), do(Action,Situation)):-
 	Action=sense(Profile, loc(Xr,Yr), _Time), 
 	member(pk(BodyA,_,SizeA,DistA), Profile),
 	member(pk(BodyB,_,SizeB,DistB), Profile),
@@ -27,10 +54,8 @@ coalescing(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), loc(Xr,Yr), do(Acti
 	),
 	dist(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), Distance, loc(Xr,Yr), Situation),
 	DistanceB < Distance, 
-	thresholdUnion(Delta), 
-	DistanceB < Delta,
-	thresholdHiding(Lambda),
-	DistanceB >= Lambda,
+	thresholdHiding(Lambda), 
+	DistanceB < Lambda,
 	location(BodyA, loc(Xa,Ya), Situation),
 	location(BodyB, loc(Xb,Yb), Situation),
 	euD(loc(Xa, Ya), loc(Xr, Yr), EuDistanceA),
@@ -42,7 +67,7 @@ coalescing(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), loc(Xr,Yr), do(Acti
 		Distance > SizeB*(-1), !
 	),!.
 
-coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(X,Y), do(Action,Situation)):-
+hiding(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(X,Y), do(Action,Situation)):-
 	robot(Robot),
 	Action=startMove(Robot, loc(X,Y), loc(Xr,Yr), _Time), 
 	location(BodyA, loc(Xa,Ya), Situation),
@@ -61,10 +86,8 @@ coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(X,Y), do(Action,S
 	angleV(loc(Xa,Ya), loc(Xb,Yb), loc(Xr,Yr), DistB),
 	DistanceB is DistB - (SizeA2/2) - (SizeB2/2),
 	DistanceB < DistanceA,
-	thresholdUnion(Delta), 
-	DistanceB < Delta,
-	thresholdHiding(Lambda),
-	DistanceB >= Lambda,
+	thresholdHiding(Lambda), 
+	DistanceB < Lambda,
 	(
 		EuDistanceA >= EuDistanceB,
 		DistanceA > SizeA2*(-1), !;
@@ -73,7 +96,7 @@ coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(X,Y), do(Action,S
 	),!.
 
 
-coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action,Situation)):-
+hiding(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action,Situation)):-
 	Action=startMove(BodyA, loc(X,Y), loc(Xa,Ya), _Time), 
 	robot(Robot),
 	location(Robot, loc(Xr,Yr), Situation), 
@@ -90,10 +113,8 @@ coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action
 	angleV(loc(Xa,Ya), loc(Xb,Yb), loc(Xr,Yr), DistB),
 	DistanceB is DistB - (SizeA2/2) - (SizeB/2),
 	DistanceB < DistanceA,
-	thresholdUnion(Delta), 
-	DistanceB < Delta,
-	thresholdHiding(Lambda),
-	DistanceB >= Lambda,
+	thresholdHiding(Lambda), 
+	DistanceB < Lambda,
 	(
 		EuDistanceA >= EuDistanceB,
 		DistanceA > SizeA2*(-1), !;
@@ -101,7 +122,7 @@ coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action
 		DistanceA > SizeB*(-1), !
 	),!.
 
-coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action,Situation)):-
+hiding(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action,Situation)):-
 	Action=startMove(BodyB, loc(X,Y), loc(Xb,Yb), _Time), 
 	robot(Robot),
 	location(Robot, loc(Xr,Yr), Situation), 
@@ -118,10 +139,8 @@ coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action
 	angleV(loc(Xa,Ya), loc(Xb,Yb), loc(Xr,Yr), DistB),
 	DistanceB is DistB - (SizeA/2) - (SizeB2/2),
 	DistanceB < DistanceA,
-	thresholdUnion(Delta), 
-	DistanceB < Delta,
-	thresholdHiding(Lambda),
-	DistanceB >= Lambda,
+	thresholdHiding(Lambda), 
+	DistanceB < Lambda,
 	(
 		EuDistanceA >= EuDistanceB,
 		DistanceA > SizeA*(-1), !;
@@ -130,8 +149,8 @@ coalescing(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action
 	),
 	!.
 
-coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situation)):-	
-	thresholdUnion(Delta), 
+hiding(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situation)):-	
+	thresholdHiding(Lambda), 
 	not((
 			Action=sense(Profile, loc(Xr,Yr), Time), 
 			member(pk(BodyA, _, SizeA2, DistA2), Profile),
@@ -145,7 +164,7 @@ coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situatio
 			dist(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), Distance, loc(Xr,Yr), Situation),
 			( 
 				DistanceB2 >= Distance, !; 
-				DistanceB2 >= Delta, !
+				DistanceB2 >= Lambda, !
 			)
 		)),
 	not(Action=endMove(BodyA, loc(Xa,Ya), loc(_,_), Time)),
@@ -157,12 +176,5 @@ coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situatio
 	location(Robot, loc(Xr,Yr), Situation), 
 	location(BodyA, loc(Xa,Ya), Situation), 
 	location(BodyB, loc(Xb,Yb), Situation), 
-	situation(Situation,ActionList),
-	prevAction(PreviousAction, Action, ActionList),
-	coalescing(pk(BodyA,_,SizeA,DistA),pk(BodyB,_,SizeB,DistB),loc(Xr,Yr),do(PreviousAction,Situation)), 
-	!.
-	
-coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),Situation):-
-	situation(Situation,[Action|_]),
-	coalescing(pk(BodyA,_,SizeA,_),pk(BodyB,_,SizeB,_),loc(Xr,Yr),do(Action,Situation)),
+	hiding(pk(BodyA,_,SizeA,DistA),pk(BodyB,_,SizeB,DistB),loc(Xr,Yr),Situation), 
 	!.

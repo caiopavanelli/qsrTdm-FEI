@@ -73,29 +73,15 @@ actionpairs(do(startPan(-5, 42), s0)).
 actionpairs(do(endPan(-5, 42), s0)).
 actionpairs(do(startMove(cpto, loc(6,6), loc(5,6), 43), s0)).
 actionpairs(do(endMove(cpto, loc(6,6), loc(5,6), 43), s0)).
-
-querypairs(X,Y, approaching(pk(bodyA,_DepthA,_SizeA,_DistanceA), pk(bodyB,_DepthB,_SizeB,_DistanceB), loc(X, Y), s0)).
-querypairs(X,Y, coalescing(pk(bodyA,_DepthA,_SizeA,_DistanceA), pk(bodyB,_DepthB,_SizeB,_DistanceB), loc(X, Y), s0)).
-querypairs(X,Y, receding(pk(bodyA,_DepthA,_SizeA,_DistanceA), pk(bodyB,_DepthB,_SizeB,_DistanceB), loc(X, Y), s0)).
-querypairs(X,Y, splitting(pk(bodyA,_DepthA,_SizeA,_DistanceA), pk(bodyB,_DepthB,_SizeB,_DistanceB), loc(X, Y), s0)).
-querypairs(X,Y, hiding(pk(bodyA,_DepthA,_SizeA,_DistanceA), pk(bodyB,_DepthB,_SizeB,_DistanceB), loc(X, Y), s0)).
-querypairs(X,Y, two_peak_static(pk(bodyA, _DepthA, _SizeA, _DistanceA), pk(bodyB, _DepthB, _SizeB, _DistanceB), loc(X, Y), s0)).
-
-querypairsAtribute(X,Y, depth(pk(bodyA, Depth, _, _), Depth, loc(X,Y), s0)).
-querypairsAtribute(X,Y, size(pk(bodyA, _, Size, _), Size, loc(X,Y), s0)).
-querypairsAtribute(X,Y, dist(pk(bodyA, _, _, Dist), Dist, loc(X,Y), s0)).
-querypairsAtribute(X,Y, depth(pk(bodyB, Depth, _, _), Depth, loc(X,Y), s0)).
-querypairsAtribute(X,Y, size(pk(bodyB, _, Size, _), Size, loc(X,Y), s0)).
-querypairsAtribute(X,Y, dist(pk(bodyB, _, _, Dist), Dist, loc(X,Y), s0)).
-querypairsAtribute(X,Y, dist(pk(bodyA, _, _, _DistA), pk(bodyB, _, _, _DistB), _Dist, loc(X,Y), s0)).
-
+   
 test_pair_of_peaks :-
+	working_directory(_, 'C:/qsrTdm-FEI'),
 	forall(initpairs(INIT),INIT),
 	forall(actionpairs(DO), 
 		    (	DO,
-		    	writeln(actionpairs:DO),
+		    	writeln(DO,'test_pair_of_peaks.txt'),
 		    	location(cpto, loc(X,Y), s0),
-		    	forall(querypairsAtribute(X,Y,AT), (AT, writeln(AT))),
-		    	forall(querypairs(X,Y,Q), (Q -> writeln(true:Q) ; writeln(false:Q)))
+		    	forall(querypairsAttribute(X,Y,AT), (call_time(AT, Ta), writeln(Ta:AT,'test_pair_of_peaks.txt'))),
+		    	forall(querypairs(X,Y,Q), (Q -> call_time(Q, Ts), writeln(Ts:true:Q,'test_pair_of_peaks.txt') ; call_time(Q, Ts), writeln(Ts:false:Q,'test_pair_of_peaks.txt')))
 		    )).
 		    

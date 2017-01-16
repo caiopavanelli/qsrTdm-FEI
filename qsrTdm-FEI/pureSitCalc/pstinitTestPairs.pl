@@ -15,35 +15,38 @@
  * - Initial Situation assertion
  ****************************************************************/
 
-:- module(initsingle,[
-		initsingle/1
+:- module(pstinitpairs,[
+		pstinitpairs/1
 	]).
-
-initsingle(assertz(situation(s0,[]))).
-initsingle(assertz(start(s0, 0))).
-initsingle(assertz(location(cpto, loc(-13,-2), s0))).
-initsingle(assertz(location(bodyA, loc(-7,2), s0))).
-initsingle(assertz(location(bodyB, loc(5,1), s0))).
-initsingle(assertz(facing(90, loc(-13,-2), s0))).
-initsingle(assertz(fieldView(120))).
-initsingle(assertz(limitBoundary(15))).
-initsingle(assertz(radius(bodyA,1))).
-initsingle(assertz(radius(bodyB,1))).
-initsingle(assertz(radius(cpto,0))).
+	
+pstinitpairs(assertz(situation(s0,[]))).
+pstinitpairs(assertz(start(s0, 0))).
+pstinitpairs(assertz(location(cpto, loc(5,-4), s0))).
+pstinitpairs(assertz(location(bodyA, loc(-7,2), s0))).
+pstinitpairs(assertz(location(bodyB, loc(5,1), s0))).
+pstinitpairs(assertz(facing(90, loc(5,-4), s0))).
+pstinitpairs(assertz(fieldView(120))).
+pstinitpairs(assertz(limitBoundary(15))).
+pstinitpairs(assertz(radius(bodyA,1))).
+pstinitpairs(assertz(radius(bodyB,1))).
+pstinitpairs(assertz(radius(cpto,0))). 
 
  %% Introduction of thresholdBoundary. A small value needed for
  %% differentiating extending from appearing and vanishing from
  %% shrinking, as pointed in Paulo E. Santos, "REASONING ABOUT DEPTH AND MOTION FROM AN OBSERVER�S VIEWPOINT", SSC07
-initsingle(assertz(thresholdBoundary(16))).
+pstinitpairs(assertz(thresholdBoundary(16))).
 
  %% Introduction of thresholdUnion. A small value needed for differentiating
  %% approaching to coalescing and receding from splitting
-initsingle(assertz(thresholdUnion(15))).
+pstinitpairs(assertz(thresholdUnion(15))).
 
 %% threshold to differentiate coalescing from hiding
-initsingle(assertz(thresholdHiding(5))).
+pstinitpairs(assertz(thresholdHiding(5))).
 
-initsingle(do(startMove(cpto, loc(-13,-2), loc(-14,-2), 1), s0)).
-initsingle(do(endMove(cpto, loc(-13,-2), loc(-14,-2), 1), s0)).
-initsingle(do(startMove(cpto, loc(-14,-2), loc(-13,-2), 1), s0)).
-initsingle(do(endMove(cpto, loc(-14,-2), loc(-13,-2), 1), s0)).
+%pstinitpairs(do(startMove(cpto, loc(5,-4), loc(6,-4), 1), s0)).
+%pstinitpairs(do(endMove(cpto, loc(5,-4), loc(6,-4), 1), s0)).
+%pstinitpairs(do(startMove(cpto, loc(6,-4), loc(5,-4), 1), s0)).
+%pstinitpairs(assertz(do(endMove(cpto, loc(6,-4), loc(5,-4), 1), 
+%						do(startMove(cpto, loc(6,-4), loc(5,-4), 1), 
+%							do(endMove(cpto, loc(5,-4), loc(6,-4), 1), 
+%								do(startMove(cpto, loc(5,-4), loc(6,-4), 1), s0))), _S0))).
