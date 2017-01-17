@@ -29,6 +29,8 @@ splitting(pk(BodyA,_,SizeA,DistA), pk(BodyB,_,SizeB,DistB), loc(Xr,Yr), do(Actio
 	DistanceB > Distance, 
 	thresholdUnion(Delta), 
 	DistanceB < Delta,
+	thresholdHiding(Lambda),
+	DistanceB >= Lambda,
 	location(BodyA, loc(Xa,Ya), Situation),
 	location(BodyB, loc(Xb,Yb), Situation),
 	euD(loc(Xa, Ya), loc(Xr, Yr), EuDistanceA),
@@ -62,6 +64,8 @@ splitting(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(X,Y), do(Action,Si
 	DistanceB > DistanceA,
 	thresholdUnion(Delta), 
 	DistanceB < Delta,
+	thresholdHiding(Lambda),
+	DistanceB >= Lambda,
 	(
 		EuDistanceA >= EuDistanceB,
 		DistanceA > SizeA2*(-1), !;
@@ -89,6 +93,8 @@ splitting(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action,
 	DistanceB > DistanceA,
 	thresholdUnion(Delta), 
 	DistanceB < Delta,
+	thresholdHiding(Lambda),
+	DistanceB >= Lambda,
 	(
 		EuDistanceA >= EuDistanceB,
 		DistanceA > SizeA2*(-1), !;
@@ -115,6 +121,8 @@ splitting(pk(BodyA, _, SizeA, _), pk(BodyB, _, SizeB ,_), loc(Xr,Yr), do(Action,
 	DistanceB > DistanceA,
 	thresholdUnion(Delta), 
 	DistanceB < Delta,
+	thresholdHiding(Lambda),
+	DistanceB >= Lambda,
 	(
 		EuDistanceA >= EuDistanceB,
 		DistanceA > SizeA*(-1), !;

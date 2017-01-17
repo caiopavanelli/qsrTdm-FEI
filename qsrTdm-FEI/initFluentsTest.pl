@@ -21,10 +21,10 @@
 	
 initFluents(assertz(situation(s0,[]))).
 initFluents(assertz(start(s0, 0))).
-initFluents(assertz(location(cpto, loc(0,8), s0))).
+initFluents(assertz(location(cpto, loc(0.0,8.0), s0))).
 initFluents(assertz(location(bodyA, loc(-7,2), s0))).
 initFluents(assertz(location(bodyB, loc(5,1), s0))).
-initFluents(assertz(facing(180, loc(0,8), s0))).
+initFluents(assertz(facing(180, loc(0.0,8.0), s0))).
 initFluents(assertz(fieldView(120))).
 initFluents(assertz(limitBoundary(15))).
 initFluents(assertz(radius(bodyA,1))).
@@ -43,10 +43,10 @@ initFluents(assertz(thresholdUnion(15))).
 %% threshold to differentiate coalescing from hiding
 initFluents(assertz(thresholdHiding(5))).
 
-initFluents(assertz(do(startMove(cpto, loc(0.0,8.0), loc(0.1,8.1), 1), s0))).
-initFluents(assertz(do(endMove(cpto, loc(0.0,8.0), loc(0.1,8.1), 1), s0))).
-initFluents(assertz(do(startMove(cpto, loc(0.1,8.1), loc(0.0,8.0), 1), s0))).
-initFluents(assertz(do(endMove(cpto, loc(0.1,8.1), loc(0.0,8.0), 1), s0))).
+initFluents(do(startMove(cpto, loc(0.0,8.0), loc(0.1,8.1), 1), s0)).
+initFluents(do(endMove(cpto, loc(0.0,8.0), loc(0.1,8.1), 1), s0)).
+initFluents(do(startMove(cpto, loc(0.1,8.1), loc(0.0,8.0), 1), s0)).
+initFluents(do(endMove(cpto, loc(0.1,8.1), loc(0.0,8.0), 1), s0)).
 		 
 			
 				

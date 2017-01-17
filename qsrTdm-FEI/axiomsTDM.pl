@@ -56,8 +56,10 @@ call_time(G,T) :-
 
 :- use_module(initTestSingle).
 :- use_module(initTestPairs).
+:- use_module(initFluentsTest).
 
 :- include(tdmTestMovement).
 :- include(tdmTestSinglePeak).
 :- include(tdmTestPairOfPeaks).
+:- include(tdmFluentsTest).
 
